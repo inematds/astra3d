@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<!-- Guia Astra3D baseado no template oficial projetos-landing-guia INEMA. -->
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Astra3D — Seu site com outra dimensão</title>
+<meta name="description" content="Escolha um modelo 3D, personalize textos, imagens e cores e exporte seu site. Guia do editor Astra3D e planos das próximas versões.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0c0c10; --bg2:#14141b; --card:#16161e; --line:#272730;
+    --txt:#e9e9ee; --mut:#9a9aa6; --amb:#E2A23B; --amb2:#f0c070; --sky:#38bdf8; --pro:#cbd5e1;
+    color-scheme:dark;
+  }
+  body.light{
+    --bg:#f6f7f9; --bg2:#eceef2; --card:#ffffff; --line:#e1e3ea;
+    --txt:#1a1a22; --mut:#5b5b68; --amb:#b9791d; --amb2:#a16207; --sky:#0369a1; --pro:#b45309;
+    color-scheme:light;
+  }
+  body.light .hero .glow{opacity:.5}
+  body.light pre{background:#0e0e14;color:#d6d6e0}
+  body.light pre .c{color:#8a8a98}
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--txt);font:16px/1.65 Inter,system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+  h1,h2,h3{font-family:Sora,sans-serif;line-height:1.15;margin:0}
+  a{color:var(--amb);text-decoration:none}
+  code,pre{font-family:"JetBrains Mono",monospace}
+  .wrap{max-width:1160px;margin:0 auto;padding:0 22px}
+  .mut{color:var(--mut)} .amb{color:var(--amb)}
+  .chip{display:inline-block;font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--amb);font-weight:600;font-family:Sora}
+  nav{position:sticky;top:0;z-index:30;backdrop-filter:blur(12px);background:rgba(12,12,16,.78);border-bottom:1px solid var(--line)}
+  nav .wrap{display:flex;align-items:center;gap:22px;height:60px}
+  nav .brand{display:flex;align-items:center;gap:8px;font-family:Sora;font-weight:800;letter-spacing:-.02em;color:var(--amb)}
+  nav .brand .emoji{font-size:1.25rem}
+  nav .sep{color:var(--mut);opacity:.45}
+  nav .inema{color:var(--sky);font-weight:600;font-size:.88rem;font-family:Sora}
+  nav .inema:hover{filter:brightness(1.15)}
+  nav .pro{color:var(--pro);font-weight:600;font-size:.88rem;font-family:Sora}
+  nav .pro:hover{filter:brightness(1.15)}
+  nav .clubpro{display:inline-flex;align-items:center;gap:6px}
+  nav .links{margin-left:auto;display:flex;align-items:center;gap:20px;font-size:.92rem}
+  nav .links a.sec{color:var(--mut)} nav .links a.sec:hover{color:var(--txt)}
+  .tgl{background:var(--bg2);border:1px solid var(--line);color:var(--txt);width:38px;height:38px;border-radius:10px;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;font-size:1.05rem}
+  .tgl:hover{border-color:var(--amb)}
+  .btn{display:inline-block;background:var(--amb);color:#1a1206;font-weight:600;padding:.6em 1.05em;border-radius:10px;font-family:Sora}
+  .btn.ghost{background:transparent;color:var(--txt);border:1px solid var(--line)}
+  @media(max-width:760px){nav .links a.sec{display:none}}
+  .hero{position:relative;overflow:hidden;border-bottom:1px solid var(--line)}
+  .hero .glow{position:absolute;inset:-40% -20% auto auto;width:70%;height:600px;background:radial-gradient(closest-side,rgba(226,162,59,.22),transparent 70%);pointer-events:none}
+  .hero .wrap{display:grid;grid-template-columns:1.1fr .9fr;gap:40px;align-items:center;padding:74px 22px}
+  .hero h1{font-size:clamp(2.2rem,5vw,3.5rem);font-weight:800;letter-spacing:-.025em}
+  .hero p.lead{font-size:1.18rem;color:var(--mut);margin:1.1em 0 1.6em;max-width:34ch}
+  .hero .cta{display:flex;gap:12px;flex-wrap:wrap}
+  .hero figure{margin:0;border-radius:16px;overflow:hidden;border:1px solid var(--line);box-shadow:0 30px 80px -30px #000}
+  .hero figure img{width:100%;display:block}
+  @media(max-width:780px){.hero .wrap{grid-template-columns:1fr;padding:48px 22px}}
+  section{padding:62px 0;border-bottom:1px solid var(--line)}
+  section h2{font-size:clamp(1.5rem,3.4vw,2.1rem);font-weight:800;letter-spacing:-.02em}
+  section .sub{color:var(--mut);margin:.6em 0 2em;max-width:62ch}
+  .grid{display:grid;gap:16px}
+  .g3{grid-template-columns:repeat(3,1fr)} .g4{grid-template-columns:repeat(4,1fr)} .g2{grid-template-columns:repeat(2,1fr)}
+  @media(max-width:820px){.g3,.g4{grid-template-columns:1fr 1fr}}
+  @media(max-width:540px){.g2,.g3,.g4{grid-template-columns:1fr}}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px}
+  .card h3{font-size:1.05rem;margin-bottom:.4em}
+  .card p{color:var(--mut);font-size:.92rem;margin:0}
+  .num{display:inline-flex;width:30px;height:30px;align-items:center;justify-content:center;border-radius:8px;background:rgba(226,162,59,.14);color:var(--amb);font-family:Sora;font-weight:800;font-size:.9rem;margin-bottom:.7em}
+  .flow{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:10px}
+  .flow span{background:var(--bg2);border:1px solid var(--line);border-radius:999px;padding:.45em .9em;font-size:.85rem;font-family:Sora;font-weight:600}
+  .flow .arr{color:var(--amb);border:none;background:none;padding:0 .1em}
+  pre{background:#0a0a0e;border:1px solid var(--line);border-radius:12px;padding:16px 18px;overflow:auto;font-size:.86rem;line-height:1.6;color:#d6d6e0}
+  pre .c{color:#6f6f7c} pre .k{color:var(--amb2)} pre .s{color:#9ece6a}
+  .step{display:grid;grid-template-columns:46px 1fr;gap:16px;margin-bottom:26px}
+  .step .b{width:46px;height:46px;border-radius:12px;background:var(--amb);color:#1a1206;font-family:Sora;font-weight:800;font-size:1.25rem;display:flex;align-items:center;justify-content:center}
+  .step h3{font-size:1.12rem;margin-bottom:.3em}
+  .step p{color:var(--mut);margin:.2em 0 .7em}
+  .ex{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+  @media(max-width:680px){.ex{grid-template-columns:1fr}}
+  .ex figure{margin:0;border-radius:14px;overflow:hidden;border:1px solid var(--line)}
+  .ex figure img{width:100%;display:block}
+  .ex figcaption{padding:12px 14px;font-size:.88rem;color:var(--mut);background:var(--card)}
+  .phase{display:flex;gap:14px;padding:16px 0;border-bottom:1px solid var(--line)}
+  .phase:last-child{border:none}
+  .phase .tag{flex:0 0 92px;font-family:Sora;font-weight:800;color:var(--amb)}
+  .phase .d strong{display:block;margin-bottom:.2em}
+  .phase .d span{color:var(--mut);font-size:.92rem}
+  footer{padding:46px 0;text-align:center;color:var(--mut);font-size:.9rem}
+  .pill{display:inline-block;border:1px solid var(--line);border-radius:999px;padding:.3em .8em;font-size:.78rem;color:var(--mut);margin:0 4px}
+@media(max-width:560px){nav .wrap{gap:8px;flex-wrap:wrap;height:auto;padding-top:10px;padding-bottom:10px}nav .brand{font-size:.9rem}nav .links{gap:8px}nav .links>.btn{font-size:.7rem}nav .clubpro{gap:4px}nav .inema,nav .pro{font-size:.7rem}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+.step>div,.card,.hero .wrap>div{min-width:0}pre{max-width:100%}.phase .d{min-width:0}a{overflow-wrap:anywhere}body.light nav{background:var(--bg)}
+</style>
+</head>
+<body>
+
+<nav><div class="wrap">
+  <a class="brand" href="#top"><span class="emoji">◈</span> Astra3D</a>
+  <span class="sep">|</span>
+  <span class="clubpro">
+    <a class="inema" href="https://inema.club" target="_blank" rel="noopener">INEMA.CLUB</a>
+    <span class="sep">-</span>
+    <a class="pro" href="https://inema.pro" target="_blank" rel="noopener">PRO</a>
+  </span>
+  <div class="links">
+    <a class="sec" href="#oque">O que é</a>
+    <a class="sec" href="#fluxo">Como funciona</a>
+    <a class="sec" href="#guia">Guia de uso</a>
+    <a class="sec" href="#exemplos">Exemplos</a>
+    <a class="sec" href="#roadmap">Roadmap</a>
+    <button class="tgl" id="themeToggle" aria-label="Alternar tema" title="Alternar tema">🌙</button>
+    <a class="btn" href="https://github.com/inematds/astra3d" target="_blank" rel="noopener">GitHub</a>
+  </div>
+</div></nav>
+
+<header class="hero" id="top">
+  <div class="glow"></div>
+  <div class="wrap">
+    <div>
+      <span class="chip">Editor visual · versão 1.0</span>
+      <h1>Seu site. Uma nova <span class="amb">dimensão.</span></h1>
+      <p class="lead">Três modelos com cenas 3D para transformar suas ideias em presença. Personalize no navegador e leve o site pronto com você.</p>
+      <div class="cta">
+        <a class="btn" href="../">Abrir o editor</a>
+        <a class="btn ghost" href="#guia">Como usar</a>
+      </div>
+    </div>
+    <figure><img src="assets/hero.png" alt="Composição ilustrativa de arcos, caderno e fita escultórica, representando os três modelos Astra3D."></figure>
+  </div>
+</header>
+
+<section id="oque"><div class="wrap"><h2>Um ponto de partida que já funciona.</h2><p class="sub">Astra3D é uma biblioteca de sites personalizáveis. As cenas já vêm incluídas: você muda seu conteúdo e confere o resultado na prévia.</p><div class="grid g3"><div class="card"><h3>Escolha sua experiência</h3><p>Órbita para portfólio, Forma para agência e Caderno para publicação. Cada modelo tem uma cena geométrica original.</p></div><div class="card"><h3>Crie sem abrir o código</h3><p>Textos, imagem, cinco paletas, duas tipografias e três opções de movimento. Controle as seções e personalize até seis itens.</p></div><div class="card"><h3>Guarde o que você criou</h3><p>Exporte um HTML com fontes e cena incluídas. Salve também o JSON para voltar a editar o projeto.</p></div></div></div></section>
+
+<section id="fluxo"><div class="wrap"><h2>Escolher. Personalizar. Publicar.</h2><p class="sub">Tudo na primeira versão acontece no navegador. Não é preciso criar uma conta nem conectar um serviço de IA.</p><div class="flow"><span>Escolher modelo</span><span class="arr">→</span><span>Inserir conteúdo</span><span class="arr">→</span><span>Ver a prévia</span><span class="arr">→</span><span>Exportar HTML</span></div><p class="mut">Astra3D exporta o site; a hospedagem do seu site é escolhida por você. Publicação automática de sites dos visitantes está planejada para a V6.</p></div></section>
+
+<section id="pre"><div class="wrap"><h2>O que você precisa</h2><p class="sub">Para usar online: um navegador atualizado, seus textos e, se quiser, uma imagem PNG, JPG ou WebP de até 8 MB. Não há chave de API para configurar.</p><div class="grid g2"><div class="card"><h3>Para personalizar</h3><p>Tenha o nome da marca, uma apresentação, seus projetos ou artigos e um link real de contato. As imagens são processadas localmente.</p></div><div class="card"><h3>Para desenvolver</h3><p>Use Node.js 22.12+ ou 24, npm e Git. O arquivo de dependências acompanha o repositório.</p><pre>git clone https://github.com/inematds/astra3d.git
+cd astra3d
+npm ci
+npm run dev</pre></div></div></div></section>
+
+<section id="guia"><div class="wrap"><h2>Do modelo ao seu site, passo a passo.</h2><p class="sub">Comece pelo editor. Use o guia abaixo para personalizar, guardar uma cópia e publicar.</p>
+<div class="step"><div class="b">1</div><div><h3>Escolha um modelo</h3><p>Abra a galeria e selecione Órbita, Forma ou Caderno. Cada modelo mantém seu próprio rascunho neste navegador.</p><p><a class="btn" href="../">Escolher meu modelo →</a></p></div></div>
+<div class="step"><div class="b">2</div><div><h3>Coloque seu conteúdo</h3><p>Na aba Conteúdo, altere o nome, a chamada, a apresentação e o texto Sobre. Adicione uma imagem e sua descrição. Configure o botão com seu endereço real.</p><pre>https://seu-site.com/contato
+mailto:voce@exemplo.com</pre><p>Links inválidos não são exportados. Sem link de contato, o site não mostra um botão que finge enviar mensagens.</p></div></div>
+<div class="step"><div class="b">3</div><div><h3>Ajuste aparência e seções</h3><p>Escolha uma paleta e tipografia na aba Aparência. Em Seções, edite projetos ou artigos, adicione ou remova itens e escolha quais seções aparecem. Retire o aviso de exemplo somente após substituir o conteúdo.</p></div></div>
+<div class="step"><div class="b">4</div><div><h3>Confira a experiência</h3><p>Alterne a prévia entre computador e celular. Role dentro dela, para frente e para trás. Abra os projetos e teste seus links. No Caderno, experimente a busca e as categorias. No celular, use os botões Personalizar e Ver prévia.</p><p>O movimento acompanha a rolagem. Quem usa movimento reduzido recebe uma cena parada; sem WebGL, o conteúdo continua acessível.</p></div></div>
+<div class="step"><div class="b">5</div><div><h3>Guarde duas cópias</h3><p>Use Salvar JSON para guardar o projeto editável. Use Exportar site para baixar o HTML pronto, com fontes, imagem e cena incluídas. Abra o HTML diretamente no navegador, inclusive offline.</p><pre>meu-site.astra3d.json  # backup para importar no editor
+meu-site.html         # site pronto para abrir e publicar</pre><p>Limpar os dados do navegador apaga rascunhos locais. O histórico de desfazer dura a sessão. Se aparecer um aviso de armazenamento, baixe o JSON antes de sair.</p></div></div>
+<div class="step"><div class="b">6</div><div><h3>Publique seu HTML</h3><p>Renomeie o HTML para index.html e envie para sua hospedagem estática. Em um repositório GitHub Pages já configurado para servir HTML estático, coloque esse arquivo na pasta publicada. O editor não pede sua senha nem publica em sua conta nesta versão.</p><pre>index.html</pre><p>Para compilar e publicar o próprio editor Astra3D, o repositório inclui um workflow GitHub Actions que publica dist/:</p><pre>npm run test
+npm run build
+npm run preview</pre></div></div></div></section>
+
+<section id="exemplos"><div class="wrap"><h2>Três caminhos para começar</h2><p class="sub">Os textos iniciais são demonstrações, não clientes ou resultados reais. Escolha uma experiência e substitua as informações pelas suas.</p><div class="grid g3"><div class="card"><h3>Órbita · portfólio</h3><p>Portal de anéis 3D, apresentação profissional, projetos com leitura expandida e contato.</p><p><a href="../#editor/portfolio">Personalizar Órbita →</a></p></div><div class="card"><h3>Forma · agência</h3><p>Fita escultórica, descrição do estúdio e cases que abrem desafio, processo e entrega.</p><p><a href="../#editor/agency">Personalizar Forma →</a></p></div><div class="card"><h3>Caderno · publicação</h3><p>Livro tridimensional, busca de textos, categorias e leitura completa. Não coleta e-mails sem um serviço externo seu.</p><p><a href="../#editor/journal">Personalizar Caderno →</a></p></div></div></div></section>
+
+<section id="roadmap"><div class="wrap"><h2>Uma biblioteca que pode crescer.</h2><p class="sub">Apenas V1 está disponível. As próximas etapas são planos, com dependências e critérios de aceite documentados.</p><div class="phase"><div class="tag">V1 · pronta</div><div class="d"><strong>Estúdio visual</strong><span>Três modelos, personalização, prévia, rascunho local e exportação HTML/JSON.</span></div></div><div class="phase"><div class="tag">V2</div><div class="d"><strong>Biblioteca de projetos</strong><span>Múltiplos projetos, histórico persistente, blocos e exportação ZIP.</span></div></div><div class="phase"><div class="tag">V3</div><div class="d"><strong>Chat de personalização</strong><span>Propostas de mudanças, revisão antes de aplicar e backend de IA seguro.</span></div></div><div class="phase"><div class="tag">V4</div><div class="d"><strong>Produto e esculturas</strong><span>Variantes de produto, peças separadas e percurso entre esculturas.</span></div></div><div class="phase"><div class="tag">V5</div><div class="d"><strong>Narrativa e arquitetura</strong><span>Histórias com escolhas e ambientes arquitetônicos exploráveis.</span></div></div><div class="phase"><div class="tag">V6</div><div class="d"><strong>Publicação e equipe</strong><span>Contas, projetos compartilhados, domínios, publicação e rollback.</span></div></div><p><a class="btn ghost" href="../#versoes">Explorar as versões</a> <a href="../docs/PLANO-VERSOES.md">Plano completo em Markdown ↗</a></p></div></section>
+
+<footer>
+  <div class="wrap">
+    <div class="pill">React</div><div class="pill">Three.js</div><div class="pill">HTML exportável</div>
+    <p style="margin-top:18px">Astra3D · Uma ferramenta da comunidade INEMA ·
+      <a href="https://github.com/inematds/astra3d">inematds/astra3d</a> ·
+      <a href="https://inema.club">INEMA.CLUB</a></p>
+  </div>
+</footer>
+
+<script>
+  (function(){
+    var KEY='astra3d-theme'; // troque astra3d pelo nome do projeto
+    var b=document.body, t=document.getElementById('themeToggle');
+    var saved=''; try{saved=localStorage.getItem(KEY);}catch(e){}
+    if(saved==='light'){ b.classList.add('light'); t.textContent='☀️'; }
+    t.addEventListener('click',function(){
+      var light=b.classList.toggle('light');
+      t.textContent=light?'☀️':'🌙';
+      try{localStorage.setItem(KEY, light?'light':'dark');}catch(e){}
+    });
+  })();
+</script>
+</body>
+</html>
