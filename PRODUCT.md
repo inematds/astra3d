@@ -16,7 +16,8 @@ Escolher um modelo testado, inserir conteúdo próprio, ver a prévia e exportar
 
 ## Capabilities and Constraints
 V1: três modelos com cenas geométricas originais, editor, prévia responsiva, imagem local, salvamento no navegador, desfazer/refazer, importação JSON e exportação HTML independente. O chat é planejado, não simulado. Modelos avançados são planos, não promessas de disponibilidade.
-Sem conta, sem pagamento, sem coleta de e-mail e sem armazenamento remoto na V1. Sites exportados não enviam dados a um servidor Astra3D. Links externos são definidos pelo usuário.
+V2.0: demonstrações independentes, múltiplos projetos em IndexedDB, renomear/duplicar/arquivar, busca/filtros, backup da biblioteca e cinco versões salvas por projeto. Migração V1 preserva os rascunhos antigos. Revisões evitam sobrescrita entre abas.
+Sem conta, sem pagamento, sem coleta de e-mail e sem armazenamento remoto. Sites exportados não enviam dados a um servidor Astra3D. Links externos são definidos pelo usuário.
 
 ## Evidence on Hand
 Transcrição fornecida pelo usuário e PDF de sete prompts de Zubair Trabzada / AI Workshop. Referências conceituais; não há autorização explícita para redistribuir o PDF. Código, geometrias e textos de demonstração são produzidos para este projeto. Não inventar clientes, vendas, depoimentos ou resultados.
@@ -31,4 +32,4 @@ Transcrição fornecida pelo usuário e PDF de sete prompts de Zubair Trabzada /
 Português brasileiro, navegação por teclado, textos HTML, foco visível, movimento reduzido e adaptação para celular.
 
 ## Open decisions
-Provedor e limites do futuro chat; autenticação, cobrança e hospedagem multiusuário nas versões futuras. Não bloqueiam a V1 autorizada.
+Provedor e limites do futuro chat; autenticação, cobrança e hospedagem multiusuário nas versões futuras. Não bloqueiam a V2.0. V2.1–V2.2 ampliarão blocos e exportação.

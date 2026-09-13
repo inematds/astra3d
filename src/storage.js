@@ -1,23 +1,3 @@
-import { validateConfig, defaultConfig } from "./config.js";
-export function readDraft(template) {
-  try {
-    const raw = localStorage.getItem(`astra3d:project:${template}`);
-    return raw ? validateConfig(JSON.parse(raw)) : defaultConfig(template);
-  } catch {
-    return defaultConfig(template);
-  }
-}
-export function saveDraft(config) {
-  try {
-    localStorage.setItem(
-      `astra3d:project:${config.template}`,
-      JSON.stringify(config),
-    );
-    return true;
-  } catch {
-    return false;
-  }
-}
 export function download(content, filename, type) {
   const blob = new Blob([content], { type });
   const url = URL.createObjectURL(blob);

@@ -41,19 +41,21 @@ import {
   safeUrl,
   fileSlug,
 } from "./config.js";
-import { readDraft, saveDraft, download, readImage } from "./storage.js";
-const Editor = lazy(() => import("./Editor.jsx"));
+const ProjectRoute = lazy(() => import("./ProjectRoute.jsx"));
+const Projects = lazy(() => import("./Projects.jsx"));
 const Scene = lazy(() => import("./Scene.jsx"));
 const REPO = "https://github.com/inematds/astra3d";
 const GUIDE = "./guia/";
 function routeFromHash() {
   const r = location.hash.slice(1);
-  return r.startsWith("editor/") &&
-    templates.some((t) => t.id === r.split("/")[1])
-    ? r
-    : r === "versoes"
-      ? r
-      : "modelos";
+  if (/^projeto\/[a-zA-Z0-9_-]+$/.test(r)) return r;
+  if (
+    /^(editor|novo|usar)\//.test(r) &&
+    templates.some((t) => t.id === r.split("/")[1]) &&
+    r.split("/").length === 2
+  )
+    return r;
+  return ["versoes", "projetos"].includes(r) ? r : "modelos";
 }
 function Logo() {
   return (
@@ -75,7 +77,7 @@ function App() {
     window.addEventListener("hashchange", cb);
     return () => window.removeEventListener("hashchange", cb);
   }, []);
-  const editor = route.startsWith("editor/");
+  const editor = /^(editor|novo|usar|projeto)\//.test(route);
   return (
     <>
       <a
@@ -97,6 +99,12 @@ function App() {
               aria-current={route === "modelos" ? "page" : undefined}
             >
               Modelos
+            </a>
+            <a
+              href="#projetos"
+              aria-current={route === "projetos" ? "page" : undefined}
+            >
+              Meus projetos
             </a>
             <a
               href="#versoes"
@@ -126,7 +134,17 @@ function App() {
             </main>
           }
         >
-          <Editor key={route} template={route.split("/")[1]} />
+          <ProjectRoute key={route} route={route} />
+        </Suspense>
+      ) : route === "projetos" ? (
+        <Suspense
+          fallback={
+            <main id="main" className="loading-editor">
+              Abrindo sua biblioteca...
+            </main>
+          }
+        >
+          <Projects />
         </Suspense>
       ) : route === "versoes" ? (
         <Roadmap />
@@ -207,7 +225,7 @@ function Gallery() {
               <article className={`template-card ${t.id}`} key={t.id}>
                 <a
                   className="template-visual"
-                  href={`#editor/${t.id}`}
+                  href={`#novo/${t.id}`}
                   style={{ background: t.color }}
                   aria-label={`Personalizar ${t.name}`}
                 >
@@ -269,10 +287,26 @@ function Gallery() {
                   </div>
                   <a
                     className="circle-link"
-                    href={`#editor/${t.id}`}
+                    href={`#novo/${t.id}`}
                     aria-label={`Abrir editor ${t.name}`}
                   >
                     <ArrowUpRight size={21} />
+                  </a>
+                </div>
+                <div className="template-links">
+                  <a
+                    href={`./demos/${t.id}/`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={`Ver demonstração ${t.name}`}
+                  >
+                    Ver demonstração <ExternalLink size={14} />
+                  </a>
+                  <a
+                    href={`#novo/${t.id}`}
+                    aria-label={`Criar projeto ${t.name}`}
+                  >
+                    Criar meu site <ArrowUpRight size={14} />
                   </a>
                 </div>
                 <div className="template-tags">
@@ -343,8 +377,8 @@ function Roadmap() {
           <span>Um caminho aberto.</span>
         </h1>
         <p>
-          A primeira versão já pode ser usada. Aqui está a evolução planejada —
-          cada etapa tem entregas e critérios próprios, sem datas prometidas.
+          A V2.0 já pode ser usada. Aqui está a evolução do projeto — cada etapa
+          tem entregas e critérios próprios, sem datas prometidas.
         </p>
         <a className="text-link" href="./docs/PLANO-VERSOES.md" download>
           Baixar o plano completo <Download size={17} />
@@ -355,7 +389,9 @@ function Roadmap() {
           <article className="version-row" key={v.number}>
             <div className="version-number">
               {v.number}
-              <span className={v.number === "V1" ? "status live" : "status"}>
+              <span
+                className={v.status === "Disponível" ? "status live" : "status"}
+              >
                 {v.status}
               </span>
             </div>
@@ -371,6 +407,9 @@ function Roadmap() {
           </article>
         ))}
       </div>
+      <a className="secondary-button" href="./docs/PLANO-V2.md" download>
+        Detalhes e próximas entregas da V2 <Download size={16} />
+      </a>
       <p className="roadmap-footnote">
         O chat precisará de um serviço de IA e backend próprios. A versão atual
         funciona localmente no navegador e exporta os sites em HTML.

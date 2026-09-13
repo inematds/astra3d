@@ -82,14 +82,25 @@ export const versions = [
     ],
   },
   {
-    number: "V2",
+    number: "V2.0",
     title: "Sua biblioteca",
-    status: "Planejado",
-    text: "Mais projetos, blocos e possibilidades de personalização.",
+    status: "Disponível",
+    text: "Demonstrações completas e um espaço para organizar seus sites.",
     items: [
-      "Vários projetos e duplicação",
-      "Histórico persistente e organização de seções",
-      "Exportação ZIP e biblioteca de assets",
+      "Criar, renomear, duplicar, arquivar e buscar projetos",
+      "Backup da biblioteca e cinco versões salvas por projeto",
+      "Migração V1 e proteção contra conflitos entre abas",
+    ],
+  },
+  {
+    number: "V2.1–2.2",
+    title: "Mais liberdade para criar",
+    status: "Planejado",
+    text: "Próximas entregas da V2, antes do chat.",
+    items: [
+      "Novos blocos e ordenação de seções",
+      "Biblioteca de imagens e exportação ZIP",
+      "Rotas de artigos, metadados e sitemap",
     ],
   },
   {

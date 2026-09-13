@@ -1,6 +1,6 @@
 # Astra3D — plano de todas as versões
 
-Decisão de produto, 13/09/2026. A sequência abaixo é um plano de evolução, não uma previsão de prazo. V1 é o escopo implementado nesta entrega; as demais dependem dos critérios e integrações indicados. O produto é uma biblioteca própria, inspirada nas famílias de experiências do material fornecido, sem redistribuir o prompt pack.
+Decisão de produto, 13/09/2026. A sequência abaixo é um plano de evolução, não uma previsão de prazo. V1 e V2.0 estão implementadas; V2.1–V2.2 e V3–V6 dependem dos critérios e integrações indicados. O produto é uma biblioteca própria, inspirada nas famílias de experiências do material fornecido, sem redistribuir o prompt pack.
 
 ## Visão e fluxo
 
@@ -22,15 +22,13 @@ Escolher um modelo → personalizar → visualizar → exportar/publicar. A inte
 
 ## V2 — Biblioteca e projetos
 
-**Objetivo:** trabalhar com mais de um site sem perder versões e ampliar as possibilidades dos três modelos.
+**V2.0 implementada:** demonstrações em páginas próprias, biblioteca de projetos, criação/renomeação/duplicação, arquivo/restauração, busca e filtros, backup JSON completo, até cinco versões salvas, migração preservando rascunhos V1 e detecção de conflitos entre abas. Armazenamento em IndexedDB; nada é enviado a um servidor.
 
-**Entregas:** biblioteca de projetos, duplicar/renomear/arquivar, snapshots persistentes, ordenação de seções, mais combinações testadas, galeria de assets com autoria/licença, importação de conteúdo em lote, artigos com rotas publicáveis e sitemap, pacotes ZIP com arquivos separados, biblioteca de blocos e documentação para novos templates.
+**V2.1 planejada:** novos blocos e ordenação acessível de seções.
 
-**Implementação:** IndexedDB para projetos e arquivos, migração do schema V1, identificadores estáveis para seções, manifestos de capacidades por template, exportadores HTML único e ZIP. Medir carregamento real antes de expandir cenas.
+**V2.2 planejada:** biblioteca de imagens, exportação ZIP, artigos multipágina e metadados de publicação.
 
-**Aceite:** importar projetos V1 sem perda; biblioteca sobrevive a recarga; duplicação independente; erro de quota oferece download de recuperação; ZIP funciona em uma subpasta de hospedagem; busca e teclado preservados.
-
-**Dependências:** V1 validada com usuários. Sem serviço de IA obrigatório.
+**Plano detalhado e critérios de aceite:** [PLANO-V2.md](PLANO-V2.md).
 
 ## V3 — Chat de personalização
 
@@ -90,4 +88,4 @@ Escolher um modelo → personalizar → visualizar → exportar/publicar. A inte
 
 ## Ordem recomendada
 
-V1 → uso real → V2 → V3. V4 e V5 ampliam a biblioteca após estabilizar o contrato de assets. V6 requer decisão operacional separada. Sem estimativas artificiais de minutos ou promessa de preço por site.
+V1 → V2.0 (disponível) → uso real → V2.1–V2.2 → V3. V4 e V5 ampliam a biblioteca após estabilizar o contrato de assets. V6 requer decisão operacional separada. Sem estimativas artificiais de minutos ou promessa de preço por site.

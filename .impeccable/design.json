@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-09-13T13:48:42.796069+00:00",
+  "generatedAt": "2026-09-13T14:43:29.825443+00:00",
   "title": "Design System: Astra3D",
   "extensions": {
     "shadows": [
@@ -77,7 +77,7 @@
       "name": "Filtro selecionado",
       "kind": "chip",
       "refersTo": "filter-selected",
-      "description": "Filtro da galeria com seleção semântica.",
+      "description": "Filtro da galeria e da biblioteca com seleção semântica; biblioteca alterna Ativos/Arquivados.",
       "html": "<button class=\"ds-filter\" aria-pressed=\"true\">Todos</button>",
       "css": ".ds-filter{background:var(--ink,#242d27);color:var(--paper,#f7f8f4);padding:9px 16px;border:0;border-radius:6px;font:600 12px Manrope,sans-serif;cursor:pointer}.ds-filter:hover{background:var(--ink,#242d27)}.ds-filter:focus-visible{outline:3px solid #537a35;outline-offset:4px}"
     },
@@ -85,8 +85,8 @@
       "name": "Navegação",
       "kind": "nav",
       "description": "Página atual identificada por linha inferior e aria-current.",
-      "html": "<nav class=\"ds-nav\" aria-label=\"Navegação principal\"><a href=\"#modelos\" aria-current=\"page\">Modelos</a><a href=\"#versoes\">Próximas versões</a></nav>",
-      "css": ".ds-nav{display:flex;gap:27px;font:600 13px Manrope,sans-serif;border-bottom:1px solid var(--line,#dfe4da)}.ds-nav a{position:relative;padding:34px 0;text-decoration:none;color:var(--ink,#242d27)}.ds-nav a[aria-current=page]::after{content:\"\";height:2px;background:var(--ink,#242d27);position:absolute;left:0;right:0;bottom:0}.ds-nav a:hover{color:#42652b}.ds-nav a:focus-visible{outline:3px solid #537a35;outline-offset:4px}"
+      "html": "<nav class=\"ds-nav\" aria-label=\"Navegação principal\"><a href=\"#modelos\">Modelos</a><a href=\"#projetos\" aria-current=\"page\">Meus projetos</a><a href=\"#versoes\">Próximas versões</a></nav>",
+      "css": ".ds-nav{display:flex;gap:22px;font:600 13px Manrope,sans-serif;border-bottom:1px solid var(--line,#dfe4da)}.ds-nav a{position:relative;padding:34px 0;text-decoration:none;color:var(--ink,#242d27)}.ds-nav a[aria-current=page]::after{content:\"\";height:2px;background:var(--ink,#242d27);position:absolute;left:0;right:0;bottom:0}.ds-nav a:hover{color:#42652b}.ds-nav a:focus-visible{outline:3px solid #537a35;outline-offset:4px}"
     },
     {
       "name": "Visual de modelo",
@@ -95,6 +95,27 @@
       "description": "Estrutura do card Órbita com fallback geométrico; a aplicação usa sua cena Three.js.",
       "html": "<a class=\"ds-template\" href=\"#editor/portfolio\" aria-label=\"Personalizar Órbita\"><span class=\"ds-mini-brand\">um novo olhar</span><span class=\"ds-mini-title\">Além<br>do óbvio.</span><span class=\"ds-placeholder\" aria-hidden=\"true\"></span><span class=\"ds-explore\">Explorar ↗</span></a>",
       "css": ".ds-template{display:block;position:relative;aspect-ratio:.91;overflow:hidden;border-radius:12px;color:#2c412e;background:#dae5ce;text-decoration:none;isolation:isolate}.ds-mini-brand{position:absolute;top:23px;left:25px;font:400 9px Manrope,sans-serif;letter-spacing:.025em}.ds-mini-title{position:absolute;top:67px;left:25px;font:400 54px/.97 \"DM Serif Display\",serif;letter-spacing:-.025em;z-index:2}.ds-placeholder{position:absolute;top:32%;left:30%;width:45%;aspect-ratio:1;border:22px double currentColor;opacity:.15;border-radius:50%;transform:rotate(-20deg)}.ds-explore{position:absolute;right:25px;bottom:19px;font:400 9px Manrope,sans-serif}.ds-template:focus-visible{outline:3px solid #537a35;outline-offset:4px}"
+    },
+    {
+      "name": "Linha de projeto",
+      "kind": "custom",
+      "description": "Linha plana da biblioteca; swatch representa a paleta do projeto e metadados indicam última atualização e versões.",
+      "html": "<article class=\"ds-project\"><div class=\"ds-swatch\">Órbita</div><div class=\"ds-project-info\"><h2>Meu portfólio</h2><p>Portfólio · Minha marca</p><small>Atualizado em 13/09/2026 · 2 versões salvas</small></div><a href=\"#projetos\">Editar ↗</a></article>",
+      "css": ".ds-project{display:flex;align-items:center;gap:22px;padding:24px 0;border-bottom:1px solid var(--line,#dfe4da);font-family:Manrope,sans-serif;color:var(--ink,#242d27)}.ds-swatch{width:80px;min-height:85px;flex-shrink:0;display:grid;place-items:center;border-radius:9px;background:#dce4d3;color:#243a2e;font-size:10px}.ds-project-info{min-width:0;flex:1}.ds-project-info h2{font-size:19px;font-weight:600;letter-spacing:-.025em;margin:0 0 7px;overflow-wrap:anywhere}.ds-project-info p{font-size:12px;margin:0 0 7px;color:var(--muted,#60695f)}.ds-project-info small{font-size:10px;color:var(--muted,#60695f)}.ds-project>a{padding:11px 17px;border:1px solid var(--line,#dfe4da);border-radius:6px;font-size:12px;font-weight:700;color:inherit;text-decoration:none}.ds-project>a:hover{background:var(--soft,#eef1e9)}.ds-project>a:focus-visible{outline:3px solid #537a35;outline-offset:4px}@media(max-width:760px){.ds-project{flex-wrap:wrap;gap:15px}.ds-swatch{width:58px;min-height:72px}.ds-project-info h2{font-size:17px}}"
+    },
+    {
+      "name": "Aviso da biblioteca",
+      "kind": "custom",
+      "description": "Mensagem persistente de resultado com fechamento explícito; erro usa role=alert e ação Tentar novamente.",
+      "html": "<div class=\"ds-notice\" role=\"status\"><span>Projeto arquivado. Encontre-o na aba Arquivados.</span><button aria-label=\"Fechar aviso\">×</button></div>",
+      "css": ".ds-notice{display:flex;align-items:center;justify-content:space-between;gap:20px;padding:17px 20px;border-radius:7px;background:var(--soft,#eef1e9);color:var(--ink,#242d27);font:13px/1.8 Manrope,sans-serif}.ds-notice button{background:transparent;border:0;color:inherit;cursor:pointer;font-size:18px}.ds-notice button:focus-visible{outline:3px solid #537a35;outline-offset:4px}.ds-notice[role=alert]{background:#f8e9dc;color:#7a301b;flex-wrap:wrap}"
+    },
+    {
+      "name": "Versões salvas",
+      "kind": "custom",
+      "description": "Disclosure nativo de pontos de retorno com contador; campo e ações reutilizam controles do editor.",
+      "html": "<details class=\"ds-versions\"><summary>Versões salvas <span>0/5</span></summary><p>Guarde um ponto de retorno antes de experimentar. Até 5 versões; uma nova substitui a mais antiga quando o limite é atingido.</p><p>Nenhuma versão salva ainda.</p></details>",
+      "css": ".ds-versions{border-bottom:1px solid var(--line,#dfe4da);padding-bottom:20px;margin-bottom:20px;font-family:Manrope,sans-serif;color:var(--ink,#242d27)}.ds-versions summary{font-size:12px;font-weight:700;cursor:pointer}.ds-versions summary>span{float:right;font-weight:400;color:var(--muted,#60695f)}.ds-versions p{font-size:11px;line-height:1.8;color:var(--muted,#60695f);margin:16px 0}.ds-versions summary:focus-visible{outline:3px solid #537a35;outline-offset:4px}"
     }
   ],
   "narrative": {
@@ -104,7 +125,8 @@
       "Galeria espaçosa",
       "Editor compacto",
       "Hierarquia por contraste e divisórias",
-      "HTML legível sem WebGL"
+      "HTML legível sem WebGL",
+      "Biblioteca em linhas com ações diretas e avisos persistentes"
     ],
     "rules": [
       {

@@ -16,3 +16,18 @@ O arquivo exportado usa fontes e runtime incluídos; acessar links externos, nat
 ## Parecer final da revisão visual
 
 **Aprovado.** Os cinco achados foram encerrados: foco do link de salto, navegação de abas, contraste do placeholder, largura do guia no celular e renderização das cenas móveis. As capturas de Forma e Caderno após rolar até os respectivos cards confirmaram a renderização. Canvas fora da viewport pode aparecer vazio em captura da página inteira por causa da suspensão de renderização; isso não ocorre ao explorar os modelos na tela.
+
+
+# Validação da V2.0
+
+Executada em 13/09/2026, com build de produção.
+
+- `npm test`: 17 testes aprovados, incluindo migração idempotente, duplicação independente, revisões concorrentes, checkpoints persistentes, importação integral e rollback do lote em falha.
+- `npm run test:e2e`: 15 testes aprovados em Chromium. Os sete novos fluxos cobrem as três demonstrações, cópia do exemplo, biblioteca móvel, backup, restauração, migração e conflito entre abas.
+- `npm run build`: aprovado; três páginas de demonstração geradas pelo mesmo renderizador do editor.
+- Capturas desktop (1440 px) e mobile (390 px) da galeria, biblioteca preenchida e demonstração. Sem transbordamento horizontal observado.
+- Detector executado uma vez: avisos do guia correspondem ao template INEMA preservado; recomendações de tokens do app são documentais.
+
+Os limites de aparelhos e navegadores descritos acima continuam válidos. Dados ficam neste navegador; não há sincronização na nuvem. Backup guarda até 100 projetos/64 MB por arquivo e checkpoints são limitados aos cinco mais recentes por projeto.
+
+Parecer independente V2: **aprovado no escopo revisado**, sem achados materiais na biblioteca, galeria e entrada das demonstrações. Revisão baseada em seis capturas e leitura de código; não substitui os testes funcionais nem comprova navegadores/aparelhos não testados.

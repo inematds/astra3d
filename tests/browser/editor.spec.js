@@ -14,6 +14,8 @@ test("editar, desfazer, refazer e recuperar o rascunho", async ({ page }) => {
     "Seu nome",
   );
   await page.getByRole("button", { name: "Refazer", exact: true }).click();
+  await expect(frame.locator(".brand")).toHaveText("Marina Costa");
+  await expect(page.locator(".save-state")).toHaveText("Salvo neste navegador");
   await page.reload();
   await expect(page.getByLabel("Seu nome", { exact: true })).toHaveValue(
     "Marina Costa",
@@ -52,7 +54,7 @@ test("JSON é portátil, importa outro modelo e rejeita conteúdo inválido", as
       mimeType: "application/json",
       buffer: Buffer.from(JSON.stringify(c)),
     });
-  await expect(page).toHaveURL(/editor\/agency/);
+  await expect(page).toHaveURL(/projeto\//);
   await expect(page.getByLabel("Nome da marca", { exact: true })).toHaveValue(
     "Estúdio importado",
   );

@@ -99,7 +99,7 @@ components:
 
 **Creative North Star: “Bancada de criação”.** Direção registrada no contrato de `index.html`: branco mineral, tinta verde, acento lima, controles precisos e arte tridimensional em grande escala. A interface usa superfícies claras e tipografia contida para dar espaço ao trabalho da pessoa.
 
-Este documento descreve a implementação V1 em `src/style.css`, `src/site.css`, `src/config.js`, `src/App.jsx` e `src/Editor.jsx`. Os tokens acima pertencem à galeria e ao editor; as paletas dos sites e a identidade INEMA do guia têm escopos próprios.
+Este documento descreve a implementação V1 e sua extensão V2.0 em `src/style.css`, `src/site.css`, `src/config.js`, `src/App.jsx`, `src/Editor.jsx` e `src/Projects.jsx`. Os tokens acima pertencem à galeria e ao editor; as paletas dos sites e a identidade INEMA do guia têm escopos próprios.
 
 Características: composição espaçosa na galeria; controles compactos no editor; hierarquia por contraste, divisórias e escala; conteúdo HTML legível com ou sem WebGL. Idioma da interface: português brasileiro.
 
@@ -169,7 +169,24 @@ Movimento reduzido desliga animações e transições da aplicação e a rolagem
 - **Do** preservar foco visível, nomes acessíveis, seleção semântica e texto explicativo dos estados.
 - **Do** testar galeria, editor e página exportada em largura móvel; os breakpoints são distintos.
 - **Do** reutilizar as paletas completas e manter texto editorial em HTML.
-- **Do** distinguir disponibilidade V1 dos planos V2–V6 visualmente e no texto.
+- **Do** distinguir disponibilidade V1/V2.0 dos planos V2.1–V6 visualmente e no texto.
 - **Don't** aplicar as fontes, glow e cores INEMA do guia à aplicação automaticamente.
 - **Don't** substituir conteúdo ou controles por canvas, nem tornar animação necessária para ler e navegar.
 - **Don't** apresentar recursos planejados com aparência de ações já disponíveis.
+
+
+## Extensão V2.0: biblioteca e demonstrações
+
+Meus projetos reutiliza o cabeçalho, botões e tokens da aplicação. O conteúdo é organizado em linhas com swatch do modelo, nome interno, marca, data, quantidade de versões e ações. Busca, filtro por modelo e ordenação ficam na mesma barra; no celular passam a linhas sem overflow. Renomeação ocorre na própria linha. Arquivo é reversível; não há diálogo de exclusão.
+
+Cada card da galeria oferece ações textuais distintas: Ver demonstração (nova aba) e Criar meu site. Demonstrações mantêm o CSS do site exportado e acrescentam uma faixa simples com retorno aos modelos, indicação de ficção e Usar este exemplo. Não usam o chrome do editor.
+
+O editor acrescenta Versões salvas no rodapé da barra lateral, com limite e ação de restauração em diálogo nativo. Estado Salvando dura até o commit no IndexedDB. Conflito ou falha fica em aviso persistente com opção para salvar uma cópia. Não apresentar erro transitório como gravação bem-sucedida.
+
+Detalhes observados da extensão:
+
+- **Linhas da biblioteca:** contêiner de até 1440px, padding de 55px/5%/65px. Linhas planas com divisórias de 1px, padding vertical de 24px e gap de 22px. Swatch de 80px por no mínimo 85px, raio de 9px, usando `soft` e `ink` do tema do projeto; título de 19px, descrição de 12px e metadados de 10px. Editar é uma ação textual com borda; renomear, duplicar, exportar e arquivar usam ícones nomeados. Projetos arquivados oferecem restauração e não exibem Editar.
+- **Filtros e busca:** Ativos/Arquivados reutilizam filtros com `aria-pressed`; busca por nome interno ou marca ignora acentos e caixa. Busca e selects têm fundo branco, borda `line` e raio de 6px. Modelo e ordenação usam selects nativos nomeados. Contagem de resultados usa `role=status`; vazio inicial, arquivo vazio e busca sem resultados têm textos distintos. Até 760px, filtros e busca ocupam linhas próprias; busca e renomeação usam 16px. Swatch passa a 58px por no mínimo 72px e ações passam para uma linha de largura total.
+- **Avisos da biblioteca:** sucesso/informação usa `soft`, `role=status` e fechamento explícito; erro usa fundo #f8e9dc, texto #7a301b, `role=alert` e Tentar novamente. Ambos usam raio de 7px, padding de 17px/20px e texto de 13px/1.8 (12px no celular). Estes avisos persistem; a duração de 7s acima se refere ao toast do editor.
+- **Pontos de retorno:** Versões salvas usa `details`/`summary` nativo, título de 12px em negrito e contador à direita. Campo opcional de nome e botão de largura total antecedem a lista, com divisórias e padding vertical de 12px. Nome de 11px e data de 10px quebram sem alargar o painel. O limite é cinco; nova versão substitui a mais antiga. Salvar/restaurar ficam desabilitados enquanto há gravação pendente ou operação de versão em andamento.
+- **Faixa da demonstração:** faixa flexível em `ink` do site com texto em `bg`, padding de 12px/5%, gap de 20px e Manrope 12px/1.6; links têm peso 700, indicação central tem 11px. Até 650px, padding lateral de 6%, gap de 12px e texto de 11px; a indicação central é ocultada. A faixa herda a paleta do site demonstrado.

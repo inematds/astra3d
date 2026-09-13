@@ -41,13 +41,20 @@ import {
   safeUrl,
   fileSlug,
 } from "./config.js";
-import { readDraft, saveDraft, download, readImage } from "./storage.js";
+import { download, readImage } from "./storage.js";
+import { projects, MAX_SNAPSHOTS } from "./projects.js";
+import { navigateProject } from "./ProjectRoute.jsx";
 import { renderSite } from "./site.js";
 
 const GUIDE = "./guia/";
-function Logo() {
+function Logo({ onLeave }) {
   return (
-    <a className="logo" href="#modelos" aria-label="Astra3D, modelos">
+    <a
+      className="logo"
+      href="#projetos"
+      onClick={onLeave}
+      aria-label="Astra3D, meus projetos"
+    >
       <span className="logo-symbol">
         <Box size={21} />
       </span>
@@ -64,17 +71,30 @@ function Field({ label, children, help }) {
     </label>
   );
 }
-function Editor({ template }) {
+function Editor({ project }) {
+  const template = project.config.template;
+  const [record, setRecord] = useState(project);
+  const [saving, setSaving] = useState(false);
+  const [saveError, setSaveError] = useState("");
+  const [versionLabel, setVersionLabel] = useState("");
+  const [versionBusy, setVersionBusy] = useState(false);
+  const [restoreVersion, setRestoreVersion] = useState(null);
+  const restoreRef = useRef(null);
+  const revision = useRef(project.revision);
+  const queue = useRef(Promise.resolve());
+  const failure = useRef(null);
+  const pending = useRef(0);
+  const scheduled = useRef(project.config);
   const [history, setHistory] = useState(() => ({
     past: [],
-    present: readDraft(template),
+    present: project.config,
     future: [],
   }));
   const config = history.present;
   const [tab, setTab] = useState("content");
   const [device, setDevice] = useState("desktop");
   const [mobilePanel, setMobilePanel] = useState("edit");
-  const [saved, setSaved] = useState(true);
+  const saved = !saveError;
   const [notice, setNotice] = useState("");
   const [busy, setBusy] = useState(false);
   const [confirmReset, setConfirmReset] = useState(false);
@@ -83,11 +103,105 @@ function Editor({ template }) {
     imageRef = useRef(null),
     resetRef = useRef(null);
   const selected = templates.find((t) => t.id === template);
+  function persist(operation) {
+    pending.current++;
+    setSaving(true);
+    const task = queue.current.then(async () => {
+      if (failure.current) throw failure.current;
+      const next = await operation(revision.current);
+      revision.current = next.revision;
+      setRecord(next);
+      return next;
+    });
+    queue.current = task.catch((error) => {
+      failure.current = error;
+      setSaveError(error.message);
+    });
+    return task.finally(() => {
+      pending.current--;
+      setSaving(pending.current > 0);
+    });
+  }
   useEffect(() => {
-    setSaved(saveDraft(config));
+    if (config !== scheduled.current) {
+      scheduled.current = config;
+      persist((rev) => projects.update(project.id, config, rev)).catch(
+        () => {},
+      );
+    }
     const timer = setTimeout(() => setPreviewConfig(config), 250);
     return () => clearTimeout(timer);
   }, [config]);
+  useEffect(() => {
+    const beforeLeave = (event) => {
+      if (pending.current || failure.current) {
+        event.preventDefault();
+        event.returnValue = "";
+      }
+    };
+    window.addEventListener("beforeunload", beforeLeave);
+    return () => window.removeEventListener("beforeunload", beforeLeave);
+  }, []);
+  useEffect(() => {
+    if (restoreVersion) restoreRef.current.showModal();
+  }, [restoreVersion]);
+  async function leave(event) {
+    event.preventDefault();
+    const target = event.currentTarget.getAttribute("href");
+    await queue.current;
+    if (failure.current) {
+      setNotice("Salve uma cópia ou baixe o JSON antes de sair.");
+      return;
+    }
+    location.hash = target;
+  }
+  async function saveCopy() {
+    try {
+      await queue.current;
+      const copy = await projects.create(
+        config,
+        record.title.slice(0, 70) + " (cópia)",
+      );
+      failure.current = null;
+      navigateProject(copy.id);
+    } catch (error) {
+      setNotice(error.message);
+    }
+  }
+  async function saveVersion() {
+    setVersionBusy(true);
+    try {
+      await persist((rev) =>
+        projects.checkpoint(project.id, versionLabel, rev),
+      );
+      setVersionLabel("");
+      setNotice(
+        "Versão salva. Você poderá restaurá-la mesmo depois de fechar o editor.",
+      );
+    } catch {
+    } finally {
+      setVersionBusy(false);
+    }
+  }
+  async function restoreSavedVersion() {
+    setVersionBusy(true);
+    try {
+      const next = await persist((rev) =>
+        projects.restore(project.id, restoreVersion.id, rev),
+      );
+      scheduled.current = next.config;
+      setHistory((h) => ({
+        past: [...h.past.slice(-39), h.present],
+        present: next.config,
+        future: [],
+      }));
+      setRestoreVersion(null);
+      setNotice("Versão restaurada. O estado anterior também foi guardado.");
+    } catch {
+    } finally {
+      setVersionBusy(false);
+    }
+  }
   useEffect(() => {
     if (!notice) return;
     const t = setTimeout(() => setNotice(""), 7000);
@@ -141,14 +255,13 @@ function Editor({ template }) {
       if (file.size > 4 * 1024 * 1024)
         throw new Error("O JSON precisa ter até 4 MB.");
       const next = validateConfig(JSON.parse(await file.text()));
-      if (next.template !== template) {
-        if (!saveDraft(next))
-          throw new Error(
-            "Não foi possível salvar o projeto importado. Exporte o rascunho atual e libere espaço no navegador.",
-          );
-        location.hash = "editor/" + next.template;
-      } else change(next);
-      setNotice("Projeto importado. Confira o conteúdo na prévia.");
+      await queue.current;
+      if (failure.current)
+        throw new Error(
+          "Baixe o JSON atual ou salve uma cópia antes de importar outro projeto.",
+        );
+      const imported = await projects.create(next, next.name);
+      navigateProject(imported.id);
     } catch (err) {
       setNotice(
         err instanceof SyntaxError
@@ -205,17 +318,21 @@ function Editor({ template }) {
   return (
     <div className="editor-shell">
       <header className="editor-header">
-        <Logo />
+        <Logo onLeave={leave} />
         <div className="editor-identity">
           <span className="header-divider" />
           <div>
-            <strong>{selected.name}</strong>
-            <span>{selected.kind}</span>
+            <strong title={record.title}>{record.title}</strong>
+            <span>{selected.name}</span>
           </div>
         </div>
         <div className="save-state" role="status">
           <span className={saved ? "save-dot" : "save-dot warning"} />
-          {saved ? "Salvo neste navegador" : "Sem espaço para salvar"}
+          {saving
+            ? "Salvando..."
+            : saved
+              ? "Salvo neste navegador"
+              : "Alterações não salvas"}
         </div>
         <div className="editor-actions">
           <button
@@ -263,8 +380,8 @@ function Editor({ template }) {
       >
         <aside className="editor-sidebar" aria-label="Personalizar site">
           <div className="sidebar-title">
-            <a href="#modelos">
-              <ArrowLeft size={15} /> Modelos
+            <a href="#projetos" onClick={leave}>
+              <ArrowLeft size={15} /> Meus projetos
             </a>
             <a
               href={GUIDE}
@@ -594,6 +711,56 @@ function Editor({ template }) {
             )}
           </div>
           <div className="sidebar-bottom">
+            <details className="saved-versions">
+              <summary>
+                Versões salvas{" "}
+                <span>
+                  {record.snapshots.length}/{MAX_SNAPSHOTS}
+                </span>
+              </summary>
+              <p>
+                Guarde um ponto de retorno antes de experimentar. Até 5 versões;
+                uma nova substitui a mais antiga quando o limite é atingido.
+              </p>
+              <label className="field">
+                <span>Nome da versão (opcional)</span>
+                <input
+                  value={versionLabel}
+                  maxLength={80}
+                  onChange={(e) => setVersionLabel(e.target.value)}
+                  placeholder="Antes de mudar as cores"
+                />
+              </label>
+              <button
+                className="secondary-button full-width"
+                disabled={versionBusy || !saved}
+                onClick={saveVersion}
+              >
+                Salvar versão
+              </button>
+              <ul>
+                {record.snapshots.map((snapshot) => (
+                  <li key={snapshot.id}>
+                    <div>
+                      <strong>{snapshot.label}</strong>
+                      <small>
+                        {new Date(snapshot.createdAt).toLocaleString("pt-BR")}
+                      </small>
+                    </div>
+                    <button
+                      className="icon-button"
+                      aria-label={`Restaurar versão ${snapshot.label}`}
+                      title="Restaurar versão"
+                      disabled={versionBusy || !saved}
+                      onClick={() => setRestoreVersion(snapshot)}
+                    >
+                      <RotateCcw size={16} />
+                    </button>
+                  </li>
+                ))}
+              </ul>
+              {!record.snapshots.length && <p>Nenhuma versão salva ainda.</p>}
+            </details>
             <div className="project-tools">
               <button
                 onClick={() =>
@@ -654,7 +821,7 @@ function Editor({ template }) {
           </div>
           <div className="preview-footer">
             <span>Role dentro da prévia para explorar o site.</span>
-            <a href="#versoes">
+            <a href="#versoes" onClick={leave}>
               <MessageSquare size={14} /> Chat nos próximos passos{" "}
               <ArrowUpRight size={13} />
             </a>
@@ -663,8 +830,11 @@ function Editor({ template }) {
       </main>
       {!saved && (
         <div className="storage-warning" role="alert">
-          Não foi possível salvar neste navegador. Baixe o JSON para guardar
-          suas alterações.
+          {saveError}{" "}
+          <button onClick={saveCopy}>
+            Salvar minhas alterações como cópia
+          </button>{" "}
+          <span>Você também pode baixar o JSON.</span>
         </div>
       )}
       {notice && (
@@ -689,6 +859,36 @@ function Editor({ template }) {
         hidden
         onChange={uploadImage}
       />
+      {restoreVersion && (
+        <dialog
+          className="reset-dialog"
+          ref={restoreRef}
+          onCancel={() => setRestoreVersion(null)}
+        >
+          <h2>Restaurar esta versão?</h2>
+          <p>
+            O conteúdo voltará para “{restoreVersion.label}”. O estado atual
+            será guardado como “Antes da restauração”.
+          </p>
+          <div>
+            <button
+              className="secondary-button"
+              autoFocus
+              disabled={versionBusy}
+              onClick={() => setRestoreVersion(null)}
+            >
+              Continuar editando
+            </button>
+            <button
+              className="primary-button"
+              disabled={versionBusy}
+              onClick={restoreSavedVersion}
+            >
+              {versionBusy ? "Restaurando..." : "Restaurar versão"}
+            </button>
+          </div>
+        </dialog>
+      )}
       {confirmReset && (
         <dialog
           ref={resetRef}
