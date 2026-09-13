@@ -1,0 +1,127 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-09-13T13:48:42.796069+00:00",
+  "title": "Design System: Astra3D",
+  "extensions": {
+    "shadows": [
+      {
+        "name": "toast",
+        "value": "0 8px 30px #19251c25",
+        "purpose": "Aviso flutuante da aplicação."
+      }
+    ],
+    "motion": [
+      {
+        "name": "reduced-motion",
+        "value": "prefers-reduced-motion: reduce",
+        "purpose": "Desliga transições/animações da aplicação e respeita preferência nas cenas; sem escala de durações de UI inventada."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "app-mobile-max",
+        "value": "760px"
+      },
+      {
+        "name": "app-compact-max",
+        "value": "1050px"
+      },
+      {
+        "name": "editor-wide-min",
+        "value": "1600px"
+      },
+      {
+        "name": "export-mobile-max",
+        "value": "650px"
+      },
+      {
+        "name": "export-wide-min",
+        "value": "1200px"
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primário",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Ação do editor; exportação usa o acento lima.",
+      "html": "<button class=\"ds-button-primary\">Primário</button>",
+      "css": ".ds-button-primary{font-family:Manrope,sans-serif;font-size:12px;font-weight:700;line-height:1.5;border-radius:6px;padding:11px 17px;cursor:pointer;background:var(--ink,#242d27);color:var(--white,#fff);border:0}.ds-button-primary:hover{background:#405137}.ds-button-primary:focus-visible{outline:3px solid #537a35;outline-offset:4px}.ds-button-primary:disabled{opacity:.4;cursor:not-allowed}"
+    },
+    {
+      "name": "Exportar site",
+      "kind": "button",
+      "refersTo": "button-export",
+      "description": "Ação do editor; exportação usa o acento lima.",
+      "html": "<button class=\"ds-button-export\">Exportar site</button>",
+      "css": ".ds-button-export{font-family:Manrope,sans-serif;font-size:12px;font-weight:700;line-height:1.5;border-radius:6px;padding:11px 17px;cursor:pointer;background:var(--accent,#d0ec86);color:#2a3921;border:0}.ds-button-export:hover{background:var(--accent,#d0ec86)}.ds-button-export:focus-visible{outline:3px solid #537a35;outline-offset:4px}.ds-button-export:disabled{opacity:.4;cursor:not-allowed}"
+    },
+    {
+      "name": "Secundário",
+      "kind": "button",
+      "refersTo": "button-secondary",
+      "description": "Ação do editor; exportação usa o acento lima.",
+      "html": "<button class=\"ds-button-secondary\">Secundário</button>",
+      "css": ".ds-button-secondary{font-family:Manrope,sans-serif;font-size:12px;font-weight:700;line-height:1.5;border-radius:6px;padding:11px 17px;cursor:pointer;background:transparent;color:var(--ink,#242d27);border:1px solid var(--line,#dfe4da)}.ds-button-secondary:hover{background:var(--soft,#eef1e9)}.ds-button-secondary:focus-visible{outline:3px solid #537a35;outline-offset:4px}.ds-button-secondary:disabled{opacity:.4;cursor:not-allowed}"
+    },
+    {
+      "name": "Campo",
+      "kind": "input",
+      "refersTo": "field",
+      "description": "Rótulo persistente e foco; erro exige mensagem explicativa.",
+      "html": "<label class=\"ds-field\"><span>Seu nome</span><input placeholder=\"Seu nome\" /></label>",
+      "css": ".ds-field{display:flex;flex-direction:column;gap:8px;font:700 11px Manrope,sans-serif;color:var(--ink,#242d27)}.ds-field input{font:400 12px/1.7 Manrope,sans-serif;border:1px solid #d8dfd2;background:var(--white,#fff);color:var(--ink,#242d27);padding:11px 12px;border-radius:6px;min-width:0}.ds-field input::placeholder{color:var(--muted,#60695f)}.ds-field input:focus-visible{outline:3px solid #537a35;outline-offset:4px}.ds-field input[aria-invalid=true]{border-color:#ac432a}"
+    },
+    {
+      "name": "Filtro selecionado",
+      "kind": "chip",
+      "refersTo": "filter-selected",
+      "description": "Filtro da galeria com seleção semântica.",
+      "html": "<button class=\"ds-filter\" aria-pressed=\"true\">Todos</button>",
+      "css": ".ds-filter{background:var(--ink,#242d27);color:var(--paper,#f7f8f4);padding:9px 16px;border:0;border-radius:6px;font:600 12px Manrope,sans-serif;cursor:pointer}.ds-filter:hover{background:var(--ink,#242d27)}.ds-filter:focus-visible{outline:3px solid #537a35;outline-offset:4px}"
+    },
+    {
+      "name": "Navegação",
+      "kind": "nav",
+      "description": "Página atual identificada por linha inferior e aria-current.",
+      "html": "<nav class=\"ds-nav\" aria-label=\"Navegação principal\"><a href=\"#modelos\" aria-current=\"page\">Modelos</a><a href=\"#versoes\">Próximas versões</a></nav>",
+      "css": ".ds-nav{display:flex;gap:27px;font:600 13px Manrope,sans-serif;border-bottom:1px solid var(--line,#dfe4da)}.ds-nav a{position:relative;padding:34px 0;text-decoration:none;color:var(--ink,#242d27)}.ds-nav a[aria-current=page]::after{content:\"\";height:2px;background:var(--ink,#242d27);position:absolute;left:0;right:0;bottom:0}.ds-nav a:hover{color:#42652b}.ds-nav a:focus-visible{outline:3px solid #537a35;outline-offset:4px}"
+    },
+    {
+      "name": "Visual de modelo",
+      "kind": "card",
+      "refersTo": "template-visual",
+      "description": "Estrutura do card Órbita com fallback geométrico; a aplicação usa sua cena Three.js.",
+      "html": "<a class=\"ds-template\" href=\"#editor/portfolio\" aria-label=\"Personalizar Órbita\"><span class=\"ds-mini-brand\">um novo olhar</span><span class=\"ds-mini-title\">Além<br>do óbvio.</span><span class=\"ds-placeholder\" aria-hidden=\"true\"></span><span class=\"ds-explore\">Explorar ↗</span></a>",
+      "css": ".ds-template{display:block;position:relative;aspect-ratio:.91;overflow:hidden;border-radius:12px;color:#2c412e;background:#dae5ce;text-decoration:none;isolation:isolate}.ds-mini-brand{position:absolute;top:23px;left:25px;font:400 9px Manrope,sans-serif;letter-spacing:.025em}.ds-mini-title{position:absolute;top:67px;left:25px;font:400 54px/.97 \"DM Serif Display\",serif;letter-spacing:-.025em;z-index:2}.ds-placeholder{position:absolute;top:32%;left:30%;width:45%;aspect-ratio:1;border:22px double currentColor;opacity:.15;border-radius:50%;transform:rotate(-20deg)}.ds-explore{position:absolute;right:25px;bottom:19px;font:400 9px Manrope,sans-serif}.ds-template:focus-visible{outline:3px solid #537a35;outline-offset:4px}"
+    }
+  ],
+  "narrative": {
+    "northStar": "Bancada de criação",
+    "overview": "Branco mineral, tinta verde, acento lima, controles precisos e arte tridimensional em grande escala. Direção registrada no contrato de index.html. Galeria e editor compartilham a identidade; sites personalizados e guia INEMA têm escopos próprios.",
+    "keyCharacteristics": [
+      "Galeria espaçosa",
+      "Editor compacto",
+      "Hierarquia por contraste e divisórias",
+      "HTML legível sem WebGL"
+    ],
+    "rules": [
+      {
+        "name": "Regra de escopo",
+        "body": "Alterar a paleta de um site não altera a identidade do editor.",
+        "section": "colors"
+      }
+    ],
+    "dos": [
+      "Preservar foco visível e estados semânticos.",
+      "Testar aplicação e sites exportados em seus próprios breakpoints.",
+      "Manter conteúdo textual em HTML."
+    ],
+    "donts": [
+      "Não aplicar automaticamente a identidade escura/âmbar INEMA do guia ao editor.",
+      "Não tornar animação necessária à leitura.",
+      "Não apresentar versões planejadas como recursos disponíveis."
+    ]
+  }
+}
