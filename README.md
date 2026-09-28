@@ -1,5 +1,7 @@
 # Astra3D
 
+**🇧🇷 [Português](README.md) · 🇺🇸 [English](README.en.md) · 🇪🇸 [Español](README.es.md)**
+
 Um estúdio visual para personalizar e exportar sites com cenas 3D originais.
 
 **[Abrir o editor](https://inematds.github.io/astra3d/)** · **[Guia de uso](https://inematds.github.io/astra3d/guia/)** · **[Plano de todas as versões](docs/PLANO-VERSOES.md)**
